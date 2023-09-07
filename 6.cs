@@ -10,8 +10,11 @@ class Program
         Console.WriteLine("b=");
         double b = Convert.ToDouble(Console.ReadLine());
         
-        double c = a * b;
+        Console.WriteLine("c=");
+        double c = Convert.ToDouble(Console.ReadLine());
+        
+       
 
-        Console.WriteLine(Math.Round(a, 3) + "/" + Math.Round(b, 3) + "=" + Math.Round(c, 3));
+        Console.WriteLine("(" + Math.Round(a, 2) + "+" + Math.Round(b, 2) + ")" + "+" + Math.Round(c, 2) + "="  + Math.Round(a, 2) + "+" + "(" + Math.Round(b, 2) + "+" + Math.Round(c, 2) + ")");
     }
 }
