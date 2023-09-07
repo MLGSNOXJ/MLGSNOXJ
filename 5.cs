@@ -12,6 +12,6 @@ class Program
         
         double c = a * b;
 
-        Console.WriteLine(Math.Round(a, 1, MidpointRounding.AwayFromZero) + "*" + Math.Round(b, 1, MidpointRounding.AwayFromZero) + "=" + Math.Round(c, 1, MidpointRounding.AwayFromZero));
+        Console.WriteLine(Math.Round(a, 3) + "/" + Math.Round(b, 3) + "=" + Math.Round(c, 3));
     }
 }
