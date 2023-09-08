@@ -1,20 +1,16 @@
 using System;
 
-class Program
-{
-    static void Main()
-    {
-        Console.WriteLine("a=");
-        double a = Convert.ToDouble(Console.ReadLine());
-
-        Console.WriteLine("b=");
-        double b = Convert.ToDouble(Console.ReadLine());
-        
-        Console.WriteLine("c=");
-        double c = Convert.ToDouble(Console.ReadLine());
-        
-       
-
-        Console.WriteLine("(" + Math.Round(a, 2) + "+" + Math.Round(b, 2) + ")" + "+" + Math.Round(c, 2) + "="  + Math.Round(a, 2) + "+" + "(" + Math.Round(b, 2) + "+" + Math.Round(c, 2) + ")");
-    }
+class Program {
+  static void Main() {
+    Console.WriteLine("Наминал купюры = ");
+    double a = Convert.ToDouble(Console.ReadLine());
+    
+    Console.WriteLine("Количество купюр = ");
+    double b = Convert.ToDouble(Console.ReadLine());
+    
+    double c = a * b;
+    
+    Console.WriteLine("Сумма Денег = " + c.ToString("F2"));
+    
+  }
 }
