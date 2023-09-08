@@ -1,3 +1,4 @@
+
 using System;
 
 class Program
@@ -15,6 +16,6 @@ class Program
         
        
 
-        Console.WriteLine("(" + Math.Round(a, 2) + "+" + Math.Round(b, 2) + ")" + "+" + Math.Round(c, 2) + "="  + Math.Round(a, 2) + "+" + "(" + Math.Round(b, 2) + "+" + Math.Round(c, 2) + ")");
+        Console.WriteLine("(" + a.ToString("F2") + "+" + b.ToString("F2") + ")" + "+" + c.ToString("F2") + "="  + a.ToString("F2") + "+" + "(" + b.ToString("F2") + "+" + c.ToString("F2") + ")");
     }
 }
