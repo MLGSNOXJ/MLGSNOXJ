@@ -10,8 +10,8 @@ class Program
         Console.WriteLine("b=");
         double b = Convert.ToDouble(Console.ReadLine());
         
-        double c = a * b;
+        double c = a / b;
 
-        Console.WriteLine(Math.Round(a, 3) + "/" + Math.Round(b, 3) + "=" + Math.Round(c, 3));
+        Console.WriteLine(a.ToString("F3") + "/" + b.ToString("F3") + "=" + c.ToString("F3"));
     }
 }
