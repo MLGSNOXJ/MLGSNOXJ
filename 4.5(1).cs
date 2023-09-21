@@ -28,6 +28,49 @@ class HelloWorld
     }
 }
 
+d)using System;
+
+class Program
+{
+    // Метод для вычисления суммы цифр числа
+    static int GetSumOfDigits(int number)
+    {
+        int sum = 0;
+
+        while (number != 0)
+        {
+            sum += number % 10;
+            number /= 10;
+        }
+
+        return sum;
+    }
+
+    // Метод для нахождения ближайшего предшествующего числа с заданной суммой цифр
+    static int GetClosestNumber(int number, int targetSum)
+    {
+        int closestNumber = number - 1;
+
+        while (GetSumOfDigits(closestNumber) != targetSum)
+        {
+            closestNumber--;
+        }
+
+        return closestNumber;
+    }
+    static void Main(string[] args)
+    {
+        int number = Convert.ToInt32(Console.ReadLine()); // Заданние числа
+
+        int sum = GetSumOfDigits(number); // Сумма цифр заданного числа
+
+        int closestNumber = GetClosestNumber(number, sum); // Ближайшее предшествующее число
+
+        Console.WriteLine(closestNumber);
+    }
+
+}
+
 
 
 
