@@ -1,4 +1,4 @@
-using System;
+a) using System;
 
 class HelloWorld
 {
@@ -16,6 +16,86 @@ class HelloWorld
 
             Console.Write(s + " ");
             s = 0;
+        }
+    }
+    static void Main()
+    {
+        int a = Convert.ToInt32(Console.ReadLine());
+        int b = Convert.ToInt32(Console.ReadLine());
+        int s = 0;
+
+        Dig(a, b, s);
+    }
+}
+
+
+
+
+
+
+
+b) using System;
+
+class HelloWorld
+{
+    static void Dig(int a, int b, int s, int c)
+    {
+        for (int i = a; i <= b; i++)
+        {
+            int num = i;
+            while (num > 0)
+            {
+                int dig = num % 10;
+                s += dig;
+                num /= 10;
+            }
+            if (s == c)
+            {
+                Console.Write(i + " ");
+                s = 0;
+            }
+            else
+            {
+                s = 0;
+                continue;
+            }
+        }
+    }
+    static void Main()
+    {
+        int a = Convert.ToInt32(Console.ReadLine());
+        int b = Convert.ToInt32(Console.ReadLine());
+        int c = Convert.ToInt32(Console.ReadLine());
+        int s = 0;
+
+        Dig(a, b, s, c);
+    }
+}
+c)using System;
+
+class HelloWorld
+{
+    static void Dig(int a, int b, int s)
+    {
+        for (int i = a; i <= b; i++)
+        {
+            int num = i;
+            while (num > 0)
+            {
+                int dig = num % 10;
+                s += dig;
+                num /= 10;
+            }
+            if (s % 2 != 0)
+            {
+                Console.Write(i + " ");
+                s = 0;
+            }
+            else
+            {
+                s = 0;
+                continue;
+            }
         }
     }
     static void Main()
