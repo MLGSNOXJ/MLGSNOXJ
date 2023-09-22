@@ -2,7 +2,7 @@ using System;
 
 class Program
 {
-    public static int НОД(int a, int b)
+    static int НОД(int a, int b)
     {
         if (a == b)
         {
