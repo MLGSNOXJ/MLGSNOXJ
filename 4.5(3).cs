@@ -1,22 +1,27 @@
+using System;
 class HelloWorld
 {
-    static void Dig(int a, int s)
+    static void Dig(int a)
     {
-        for(int i = 1; i <= a; i++)
+        if (a < 1)
+            Console.Write("");
+        else
         {
-            for(int j = i; j >= 1; j--)
-            {
-                Console.Write(i + " ");
+            Dig(a - 1);
 
+            for (int i = 1; i <=a; i++)
+            {
+                Console.Write(a + " ");
             }
             Console.WriteLine();
         }
+
+       
     }
+
     static void Main()
     {
         int a = Convert.ToInt32(Console.ReadLine());
-        int s = 0;
-
-        Dig(a, s);
+        Dig(a);
     }
 }
