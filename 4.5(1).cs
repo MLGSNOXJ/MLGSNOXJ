@@ -156,40 +156,40 @@ d)using System;
 class Program
 {
     // Метод для вычисления суммы цифр числа
-    static int GetSumOfDigits(int number)
+    static int DigS(int a)
     {
-        int sum = 0;
+        int s = 0;
 
-        while (number != 0)
+        while (a != 0)
         {
-            sum += number % 10;
-            number /= 10;
+            s += a % 10;
+            a /= 10;
         }
 
-        return sum;
+        return s;
     }
 
     // Метод для нахождения ближайшего предшествующего числа с заданной суммой цифр
-    static int GetClosestNumber(int number, int targetSum)
+    static int DigP(int a, int n)
     {
-        int closestNumber = number - 1;
+        int p = a - 1;
 
-        while (GetSumOfDigits(closestNumber) != targetSum)
+        while (DigS(p) != n)
         {
-            closestNumber--;
+            p--;
         }
 
-        return closestNumber;
+        return p;
     }
     static void Main(string[] args)
     {
-        int number = Convert.ToInt32(Console.ReadLine()); // Заданние числа
+        int a = Convert.ToInt32(Console.ReadLine()); // Заданние числа
 
-        int sum = GetSumOfDigits(number); // Сумма цифр заданного числа
+        int s = DigS(a); // Сумма цифр заданного числа
 
-        int closestNumber = GetClosestNumber(number, sum); // Ближайшее предшествующее число
+        int p = DigP(a, s); // Ближайшее предшествующее число
 
-        Console.WriteLine(closestNumber);
+        Console.WriteLine(p);
     }
 
 }
