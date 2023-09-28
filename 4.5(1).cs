@@ -194,3 +194,86 @@ class Program
 
 }
 
+using System;
+
+class Program
+{
+    static int GetDigitsSum(int number)
+    {
+        int sum = 0;
+        while (number != 0)
+        {
+            sum += number % 10;
+            number /= 10;
+        }
+        return sum;
+    }
+
+    static void PrintDigitsSumInRange(int i)
+    {
+            int sum = GetDigitsSum(i);
+            Console.WriteLine($"Сумма цифр числа {i}: {sum}");
+    }
+
+    static void PrintNumbersWithDigitsSum(int i, int c)
+    {
+        
+            int sum = GetDigitsSum(i);
+            if (sum == c)
+            {
+                Console.WriteLine($"Число {i} имеет сумму цифр равную {c}");
+            }
+    }
+
+    static void PrintOddDigitsSumNumbers(int i)
+    {
+            int sum = GetDigitsSum(i);
+            if (sum % 2 != 0)
+            {
+                Console.WriteLine($"Число {i} имеет нечетную сумму цифр");
+            }
+        
+    }
+
+    static int GetClosestNumberWithSameDigitsSum(int number)
+    {
+        int targetSum = GetDigitsSum(number);
+        int closestNumber = number - 1;
+        int closestSum = GetDigitsSum(closestNumber);
+
+        while (closestSum != targetSum)
+        {
+            closestNumber--;
+            closestSum = GetDigitsSum(closestNumber);
+        }
+
+        return closestNumber;
+    }
+
+    static void Main(string[] args)
+    {
+        int a = Convert.ToInt32(Console.ReadLine());
+        int b = Convert.ToInt32(Console.ReadLine());
+        int c = Convert.ToInt32(Console.ReadLine());
+        int A = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("a) Сумма цифр чисел на отрезке [a, b]:");
+        for (int i = a; i <= b; i++){
+
+        
+        PrintDigitsSumInRange(i);
+        }
+        Console.WriteLine("\nb) Числа на отрезке [a, b] с суммой цифр равной C:");
+        for (int i = a; i <= b; i++){
+        
+        PrintNumbersWithDigitsSum(i, c);
+        }
+        Console.WriteLine("\nc) Числа на отрезке [a, b] с нечетной суммой цифр:");
+
+        for (int i = a; i <= b; i++){
+        PrintOddDigitsSumNumbers(i);
+        }
+        Console.WriteLine("\nd) Ближайшее предшествующее число к числу A с такой же суммой цифр:");
+        int closestNumber = GetClosestNumberWithSameDigitsSum(A);
+        Console.WriteLine($"Ближайшее предшествующее число к {A} с такой же суммой цифр: {closestNumber}");
+    }
+}
