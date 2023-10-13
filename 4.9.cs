@@ -36,6 +36,6 @@ class Program
             }
         }
 
-        Console.WriteLine("Файл успешно создан.");
+        Console.WriteLine("bimbimbambam");
     }
 }
