@@ -5,9 +5,9 @@ class Program
 {
     static void Main()
     {
-        string inputFile1 = "E:\\1.txt";
-        string inputFile2 = "E:\\2.txt";
-        string outputFile = "E:\\output.txt";
+        string inputFile1 = "1.txt";
+        string inputFile2 = "2.txt";
+        string outputFile = "output.txt";
 
         using (FileStream fileIn1 = new FileStream(inputFile1, FileMode.Open))
         using (FileStream fileIn2 = new FileStream(inputFile2, FileMode.Open))
@@ -31,8 +31,10 @@ class Program
 
                     int sum = num1 + num2;
 
-                    fileOut.WriteLine(sum);
+                    fileOut.Write(sum + " "); // Запись символа в файл
                 }
+
+                fileOut.WriteLine(); // Добавление перехода на новую строку между записями
             }
         }
 
