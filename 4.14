@@ -1,0 +1,42 @@
+using System;
+
+struct Point
+{
+    public int X;
+    public int Y;
+
+    public double DistanceFromOrigin()
+    {
+        return Math.Sqrt(X * X + Y * Y);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Point[] points = {
+            new Point { X = 3, Y = 4 },
+            new Point { X = 1, Y = 2 },
+            new Point { X = -1, Y = 5 },
+            new Point { X = 7, Y = 2 },
+            new Point { X = 0, Y = 0 }
+        };
+
+        Point nearestPoint = points[0]; // Предположим, что первая точка изначально является ближайшей
+
+        double minDistance = nearestPoint.DistanceFromOrigin();
+
+        foreach (var point in points)
+        {
+            double distance = point.DistanceFromOrigin();
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearestPoint = point;
+            }
+        }
+
+        Console.WriteLine($"Точка ({nearestPoint.X}, {nearestPoint.Y}) наименее удалена от начала координат.");
+    }
+}
