@@ -1,12 +1,17 @@
 using System;
+using System.IO;
+using System.Collections.Generic;
 
+// Определение структуры Point, представляющей точку в двумерном пространстве
 struct Point
 {
-    public int X;
-    public int Y;
+    public int X; // Координата X
+    public int Y; // Координата Y
 
+    // Метод для вычисления расстояния от точки до начала координат
     public double DistanceFromOrigin()
     {
+        // Используется теорема Пифагора для вычисления расстояния
         return Math.Sqrt(X * X + Y * Y);
     }
 }
@@ -15,28 +20,46 @@ class Program
 {
     static void Main()
     {
-        Point[] points = {
-            new Point { X = 3, Y = 4 },
-            new Point { X = 1, Y = 2 },
-            new Point { X = -1, Y = 5 },
-            new Point { X = 7, Y = 2 },
-            new Point { X = 0, Y = 0 }
-        };
+        // Чтение координат из файла
+        string[] lines = File.ReadAllLines("1.txt");
 
-        Point nearestPoint = points[0]; // Предположим, что первая точка изначально является ближайшей
+        // Создание массива точек
+        Point[] points = new Point[lines.Length];
 
-        double minDistance = nearestPoint.DistanceFromOrigin();
+        // Заполнение массива точек данными из файла
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string[] coordinates = lines[i].Split(' ');
+            points[i] = new Point { X = int.Parse(coordinates[0]), Y = int.Parse(coordinates[1]) };
+        }
+
+        // Поиск минимального расстояния
+        List<Point> minDistancePoints = new List<Point>();
+        double minDistance = double.MaxValue;
 
         foreach (var point in points)
         {
             double distance = point.DistanceFromOrigin();
+
             if (distance < minDistance)
             {
+                minDistancePoints.Clear();
                 minDistance = distance;
-                nearestPoint = point;
+            }
+            if (distance == minDistance)
+            {
+                minDistancePoints.Add(point);
             }
         }
 
-        Console.WriteLine($"Точка ({nearestPoint.X}, {nearestPoint.Y}) наименее удалена от начала координат.");
+    
+
+        // Вывод всех точек с минимальным расстоянием
+        Console.WriteLine($"Точки с минимальным расстоянием {minDistance} от начала координат:");
+
+        foreach (var point in minDistancePoints)
+        {
+            Console.WriteLine($"Точка ({point.X}, {point.Y})");
+        }
     }
 }
