@@ -1,0 +1,83 @@
+using System; // Подключение пространства имен System для базовых функций
+using System.IO; // Подключение пространства имен System.IO для работы с файлами
+using System.Linq; // Подключение пространства имен System.Linq для использования LINQ
+
+public struct Car // Объявление структуры Car для хранения данных об автомобиле
+{
+    public string Brand; // Марка автомобиля
+    public string LicensePlate; // Номер автомобиля
+    public string OwnerLastName; // Фамилия владельца
+    public int YearPurchased; // Год приобретения
+    public double Mileage; // Пробег
+    // Конструктор для инициализации данных об автомобиле
+    public Car(string brand, string licensePlate, string ownerLastName, int yearPurchased, double mileage)
+    {
+        Brand = brand;
+        LicensePlate = licensePlate;
+        OwnerLastName = ownerLastName;
+        YearPurchased = yearPurchased;
+        Mileage = mileage;
+    }
+}
+
+class Program // Основной класс программы
+{
+    static void Main() // Главный метод программы
+    {
+        string inputFilePath = "input.txt"; // Путь к входному файлу с данными
+        Car[] cars = ReadCarsFromFile(inputFilePath); // Чтение данных из файла в массив объектов Car
+        int specifiedYear = Convert.ToInt32(Console.ReadLine()); // Заданный год для фильтрации данных
+        Car[] filteredCars = FilterAndSortCars(cars, specifiedYear); // Фильтрация и сортировка данных
+        string outputFilePath = "output.txt"; // Путь для записи результата
+        WriteCarsToFile(outputFilePath, filteredCars); // Запись отфильтрованных и отсортированных данных в файл
+    }
+
+    static Car[] ReadCarsFromFile(string filePath) // Метод для чтения данных из файла в массив объектов Car
+    {
+        Car[] cars = new Car[0]; // Инициализация массива для хранения данных об автомобилях
+        string[] lines = File.ReadAllLines(filePath); // Чтение всех строк из файла
+        cars = new Car[lines.Length]; // Инициализация массива объектов Car по количеству строк
+
+        for (int i = 0; i < lines.Length; i++) // Цикл для обработки каждой строки файла
+        {
+            string[] data = lines[i].Split(';'); // Разделение строки на отдельные данные
+
+            // Инициализация переменных из данных строки
+            string brand = data[0];
+            string licensePlate = data[1];
+            string ownerLastName = data[2];
+            int yearPurchased = int.Parse(data[3]);
+            double mileage = double.Parse(data[4]);
+
+            // Создание экземпляра Car и добавление в массив cars
+            Car car = new Car(brand, licensePlate, ownerLastName, yearPurchased, mileage);
+            cars[i] = car;
+        }
+
+        return cars; // Возвращение массива объектов Car
+    }
+
+    static Car[] FilterAndSortCars(Car[] cars, int specifiedYear) // Метод для фильтрации и сортировки данных
+    {
+        // Фильтрация и сортировка данных по заданным критериям
+        Car[] filteredCars = cars.Where(car => car.YearPurchased < specifiedYear)
+                                 .OrderBy(car => car.Mileage)
+                                 .ToArray();
+        return filteredCars; // Возвращение отфильтрованных и отсортированных данных
+    }
+
+    static void WriteCarsToFile(string filePath, Car[] cars) // Метод для записи данных в файл
+    {
+            // Запись данных об автомобилях в файл
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (Car car in cars) // Цикл для каждого объекта Car в массиве
+                {
+                    // Запись данных об автомобиле в файл
+                    writer.WriteLine($"{car.Brand};{car.LicensePlate};{car.OwnerLastName};{car.YearPurchased};{car.Mileage}");
+                }
+            }
+
+            Console.WriteLine("Данные успешно записаны в файл."); // Вывод сообщения об успешной записи
+        }
+}
