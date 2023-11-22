@@ -2,16 +2,20 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-// Определение структуры Point, представляющей точку в двумерном пространстве
 struct Point
 {
-    public int X; // Координата X
-    public int Y; // Координата Y
+    public int X;
+    public int Y;
 
-    // Метод для вычисления расстояния от точки до начала координат
+    // Конструктор для установки координат X и Y при создании экземпляра Point
+    public Point(int x, int y)
+    {
+        X = x;
+        Y = y;
+    }
+
     public double DistanceFromOrigin()
     {
-        // Используется теорема Пифагора для вычисления расстояния
         return Math.Sqrt(X * X + Y * Y);
     }
 }
@@ -20,20 +24,16 @@ class Program
 {
     static void Main()
     {
-        // Чтение координат из файла
         string[] lines = File.ReadAllLines("1.txt");
-
-        // Создание массива точек
         Point[] points = new Point[lines.Length];
 
-        // Заполнение массива точек данными из файла
         for (int i = 0; i < lines.Length; i++)
         {
             string[] coordinates = lines[i].Split(' ');
-            points[i] = new Point { X = int.Parse(coordinates[0]), Y = int.Parse(coordinates[1]) };
+            // Использование конструктора для создания экземпляра Point с заданными координатами
+            points[i] = new Point(int.Parse(coordinates[0]), int.Parse(coordinates[1]));
         }
 
-        // Поиск минимального расстояния
         List<Point> minDistancePoints = new List<Point>();
         double minDistance = double.MaxValue;
 
@@ -52,9 +52,6 @@ class Program
             }
         }
 
-    
-
-        // Вывод всех точек с минимальным расстоянием
         Console.WriteLine($"Точки с минимальным расстоянием {minDistance} от начала координат:");
 
         foreach (var point in minDistancePoints)
