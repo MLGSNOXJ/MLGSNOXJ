@@ -1,22 +1,22 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
+using System.Collections.Generic; // Добавление этой строки для List<T>
 
-struct Point
+public struct Car
 {
-    public int X;
-    public int Y;
+    public string Brand; // Марка автомобиля
+    public string LicensePlate; // Номерной знак
+    public string OwnerLastName; // Фамилия владельца
+    public int YearPurchased; // Год покупки
+    public double Mileage; // Пробег
 
-    // Конструктор для установки координат X и Y при создании экземпляра Point
-    public Point(int x, int y)
+    public Car(string brand, string licensePlate, string ownerLastName, int yearPurchased, double mileage)
     {
-        X = x;
-        Y = y;
-    }
-
-    public double DistanceFromOrigin()
-    {
-        return Math.Sqrt(X * X + Y * Y);
+        Brand = brand;
+        LicensePlate = licensePlate;
+        OwnerLastName = ownerLastName;
+        YearPurchased = yearPurchased;
+        Mileage = mileage;
     }
 }
 
@@ -24,39 +24,75 @@ class Program
 {
     static void Main()
     {
-        string[] lines = File.ReadAllLines("1.txt");
-        Point[] points = new Point[lines.Length];
+        string inputFilePath = "input.txt"; // Путь к входному файлу
+        Car[] cars = ReadCarsFromFile(inputFilePath); // Чтение данных об автомобилях из файла
+
+        int specifiedYear = Convert.ToInt32(Console.ReadLine()); // Ввод пользователем указанного года
+        Car[] filteredCars = FilterAndSortCars(cars, specifiedYear); // Фильтрация и сортировка автомобилей
+
+        string outputFilePath = "output.txt"; // Путь к выходному файлу
+        WriteCarsToFile(outputFilePath, filteredCars); // Запись отфильтрованных данных об автомобилях в файл
+    }
+
+    static Car[] ReadCarsFromFile(string filePath)
+    {
+        string[] lines = File.ReadAllLines(filePath); // Чтение всех строк из файла
+        Car[] cars = new Car[lines.Length]; // Создание массива для хранения данных об автомобилях
 
         for (int i = 0; i < lines.Length; i++)
         {
-            string[] coordinates = lines[i].Split(' ');
-            // Использование конструктора для создания экземпляра Point с заданными координатами
-            points[i] = new Point(int.Parse(coordinates[0]), int.Parse(coordinates[1]));
+            string[] data = lines[i].Split(';'); // Разделение строки на данные об автомобиле
+            string brand = data[0]; // Извлечение марки автомобиля
+            string licensePlate = data[1]; // Извлечение номерного знака
+            string ownerLastName = data[2]; // Извлечение фамилии владельца
+            int yearPurchased = int.Parse(data[3]); // Извлечение года покупки
+            double mileage = double.Parse(data[4]); // Извлечение пробега
+            Car car = new Car(brand, licensePlate, ownerLastName, yearPurchased, mileage); // Создание объекта Car
+            cars[i] = car; // Добавление объекта Car в массив
         }
 
-        List<Point> minDistancePoints = new List<Point>();
-        double minDistance = double.MaxValue;
+        return cars; // Возврат массива данных об автомобилях
+    }
 
-        foreach (var point in points)
+    static Car[] FilterAndSortCars(Car[] cars, int specifiedYear)
+    {
+        List<Car> filteredCars = new List<Car>(); // Создание списка для отфильтрованных данных
+
+        foreach (Car car in cars)
         {
-            double distance = point.DistanceFromOrigin();
-
-            if (distance < minDistance)
+            if (car.YearPurchased < specifiedYear)
             {
-                minDistancePoints.Clear();
-                minDistance = distance;
-            }
-            if (distance == minDistance)
-            {
-                minDistancePoints.Add(point);
+                filteredCars.Add(car); // Добавление подходящего автомобиля в список
             }
         }
 
-        Console.WriteLine($"Точки с минимальным расстоянием {minDistance} от начала координат:");
-
-        foreach (var point in minDistancePoints)
+        for (int i = 1; i < filteredCars.Count; i++)
         {
-            Console.WriteLine($"Точка ({point.X}, {point.Y})");
+            Car keyCar = filteredCars[i]; // Выбор автомобиля для сортировки
+            int j = i - 1;
+
+            while (j >= 0 && filteredCars[j].Mileage > keyCar.Mileage)
+            {
+                filteredCars[j + 1] = filteredCars[j]; // Сдвиг элементов для сортировки
+                j = j - 1;
+            }
+            filteredCars[j + 1] = keyCar; // Вставка автомобиля на правильную позицию в списке
         }
+
+        return filteredCars.ToArray(); // Преобразование списка в массив и возврат его
+    }
+
+    static void WriteCarsToFile(string filePath, Car[] cars)
+    {
+        using (StreamWriter writer = new StreamWriter(filePath)) // Использование StreamWriter для записи в файл
+        {
+            foreach (Car car in cars)
+            {
+                writer.WriteLine($"{car.Brand};{car.LicensePlate};{car.OwnerLastName};{car.YearPurchased};{car.Mileage}");
+                // Запись данных об автомобиле в файл в формате "Марка;Номерной знак;Фамилия владельца;Год покупки;Пробег"
+            }
+        }
+
+        Console.WriteLine("Данные успешно записаны в файл."); // Вывод сообщения об успешной записи данных в файл
     }
 }
