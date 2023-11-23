@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+class Student
+{
+    public string Name { get; set; }
+    public string Group { get; set; }
+    public int Exam1 { get; set; }
+    public int Exam2 { get; set; }
+    public int Exam3 { get; set; }
+}
+
+class Program
+{
+    static void Main()
+    {
+        string filePath = "input.txt"; // Путь к файлу с данными студентов
+
+        // Создание списка студентов
+        List<Student> students = File.ReadAllLines(filePath) // Чтение строк из файла
+            .Select(line => // Преобразование каждой строки в объект Student
+            {
+                string[] parts = line.Split(", "); // Разделение строки на части
+                return new Student // Создание объекта Student из частей строки
+                {
+                    Name = parts[0], // Заполнение поля Name студента
+                    Group = parts[1], // Заполнение поля Group студента
+                    Exam1 = int.Parse(parts[2]), // Преобразование строки в число и заполнение поля Exam1 студента
+                    Exam2 = int.Parse(parts[3]), // Преобразование строки в число и заполнение поля Exam2 студента
+                    Exam3 = int.Parse(parts[4]) // Преобразование строки в число и заполнение поля Exam3 студента
+                };
+            })
+            .ToList(); // Преобразование последовательности в список студентов
+
+        // LINQ-запрос для фильтрации студентов, не сдавших сессию, и группировки по номеру группы
+        var failedStudentsByGroup = from student in students // Перебор каждого студента из списка
+                                    where student.Exam1 < 60 || student.Exam2 < 60 || student.Exam3 < 60 // Фильтрация студентов, у которых хотя бы один экзамен меньше 60 баллов
+                                    group student by student.Group; // Группировка студентов по номеру группы
+
+        // Создание нового файла для записи информации о несдавших студентах
+        string outputFilePath = "output.txt"; // Путь к файлу для записи результатов
+        using (StreamWriter writer = File.CreateText(outputFilePath)) // Создание потока записи в файл
+        {
+            foreach (var group in failedStudentsByGroup) // Перебор каждой группы студентов
+            {
+                writer.WriteLine($"Группа: {group.Key}"); // Запись номера группы в файл
+                foreach (var student in group) // Перебор каждого студента в группе
+                {
+                    writer.WriteLine($"ФИО: {student.Name}, Результаты: {student.Exam1}, {student.Exam2}, {student.Exam3}"); // Запись данных о студенте в файл
+                }
+                writer.WriteLine(); // Запись пустой строки для разделения групп студентов
+            }
+        }
+
+        Console.WriteLine($"Информация о несдавших студентах сохранена в файл: {outputFilePath}"); // Вывод сообщения об успешном завершении работы
+    }
+}
