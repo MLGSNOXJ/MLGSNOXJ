@@ -10,18 +10,33 @@ class Program
         int b = 10; // Верхняя граница отрезка
 
         string filePath = "numbers.txt"; // Путь к файлу с числами
-        int[] numbers = File.ReadAllLines(filePath) // Чтение всех строк из файла
-                            .Select(int.Parse) // Преобразование строк в числа типа int
-                            .ToArray(); // Преобразование последовательности в массив чисел
 
-        var outsideRange = from num in numbers // LINQ-запрос: перебор чисел из массива
-                           where num < a || num > b // Фильтрация чисел по условию
-                           orderby num descending // Сортировка чисел по убыванию
-                           select num; // Выбор чисел, удовлетворяющих условиям
+        try
+        {
+            int[] numbers = File.ReadAllLines(filePath) // Чтение всех строк из файла
+                                .Select(int.Parse) // Преобразование строк в числа типа int
+                                .ToArray(); // Преобразование последовательности в массив чисел
 
-        // Запись чисел из массива в файл, каждое число на новой строке
-        string outputFilePath = "output.txt";
-        File.WriteAllLines(outputFilePath, outsideRange.Select(n => n.ToString())); // Запись чисел в файл
+            var outsideRange = from num in numbers // LINQ-запрос: перебор чисел из массива
+                               where num < a || num > b // Фильтрация чисел по условию
+                               orderby num descending // Сортировка чисел по убыванию
+                               select num; // Выбор чисел, удовлетворяющих условиям
 
+            // Запись чисел из массива в файл, каждое число на новой строке
+            string outputFilePath = "output.txt";
+            File.WriteAllLines(outputFilePath, outsideRange.Select(n => n.ToString())); // Запись чисел в файл
+        }
+        catch (FileNotFoundException ex)
+        {
+            Console.WriteLine($"Файл '{filePath}' не найден: {ex.Message}");
+        }
+        catch (FormatException ex)
+        {
+            Console.WriteLine($"Невозможно преобразовать строку в число: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Произошла ошибка: {ex.Message}");
+        }
     }
 }
