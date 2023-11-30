@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+class Student
+{
+    public string Name { get; set; }
+    public string Group { get; set; }
+    public int Exam1 { get; set; }
+    public int Exam2 { get; set; }
+    public int Exam3 { get; set; }
+}
+
+static class StudentExtensions
+{
+    public static bool IsFailed(this Student student)
+    {
+        return student.Exam1 < 60 || student.Exam2 < 60 || student.Exam3 < 60;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        string filePath = "input.txt"; // Путь к файлу с данными студентов
+
+        List<Student> students = File.ReadAllLines(filePath) // Чтение строк из файла
+            .Select(line =>
+            {
+                string[] parts = line.Split(", "); // Разделение строки на части
+                return new Student
+                {
+                    Name = parts[0],
+                    Group = parts[1],
+                    Exam1 = int.Parse(parts[2]),
+                    Exam2 = int.Parse(parts[3]),
+                    Exam3 = int.Parse(parts[4])
+                };
+            })
+            .ToList();
+
+        var failedStudentsByGroup = students.Where(s => s.IsFailed()) // Фильтрация несдавших студентов
+                                           .GroupBy(s => s.Group); // Группировка по номеру группы
+
+        string outputFilePath = "output.txt";
+
+        using (StreamWriter writer = File.CreateText(outputFilePath))
+        {
+            foreach (var group in failedStudentsByGroup)
+            {
+                writer.WriteLine($"Группа: {group.Key}");
+                foreach (var student in group)
+                {
+                    writer.WriteLine($"ФИО: {student.Name}, Результаты: {student.Exam1}, {student.Exam2}, {student.Exam3}");
+                }
+                writer.WriteLine();
+            }
+        }
+
+        Console.WriteLine($"Информация о несдавших студентах сохранена в файл: {outputFilePath}");
+    }
+}
