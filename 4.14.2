@@ -2,16 +2,20 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
+// Структура, представляющая автомобиль
 public struct Car : IComparable<Car>
 {
-    public string Brand;
-    public string LicensePlate;
-    public string OwnerLastName;
-    public int YearPurchased;
-    public double Mileage;
+    // Поля структуры Car
+    public string Brand; // Марка
+    public string LicensePlate; // Номерной знак
+    public string OwnerLastName; // Фамилия владельца
+    public int YearPurchased; // Год покупки
+    public double Mileage; // Пробег
 
+    // Конструктор структуры Car
     public Car(string brand, string licensePlate, string ownerLastName, int yearPurchased, double mileage)
     {
+        // Присвоение значений полям при инициализации
         this.Brand = brand;
         this.LicensePlate = licensePlate;
         this.OwnerLastName = ownerLastName;
@@ -19,6 +23,7 @@ public struct Car : IComparable<Car>
         this.Mileage = mileage;
     }
 
+    // Метод для сравнения автомобилей на основе пробега
     public int CompareTo(Car otherCar)
     {
         if (this.Mileage < otherCar.Mileage)
@@ -36,67 +41,94 @@ public struct Car : IComparable<Car>
     }
 }
 
+// Основной класс программы
 class Program
 {
+    // Главный метод программы
     static void Main()
     {
+        // Путь к входному файлу
         string inputFilePath = "input.txt";
+        // Чтение данных об автомобилях из файла
         Car[] cars = ReadCarsFromFile(inputFilePath);
 
+        // Ввод пользователем указанного года
         int specifiedYear = Convert.ToInt32(Console.ReadLine());
+        // Фильтрация и сортировка автомобилей
         Car[] filteredCars = FilterAndSortCars(cars, specifiedYear);
 
+        // Путь к выходному файлу
         string outputFilePath = "output.txt";
+        // Запись отфильтрованных данных об автомобилях в файл
         WriteCarsToFile(outputFilePath, filteredCars);
     }
 
+    // Метод для чтения данных об автомобилях из файла
     static Car[] ReadCarsFromFile(string filePath)
     {
+        // Чтение всех строк из файла
         string[] lines = File.ReadAllLines(filePath);
+        // Создание массива для хранения данных об автомобилях
         Car[] cars = new Car[lines.Length];
 
+        // Цикл по строкам файла
         for (int i = 0; i < lines.Length; i++)
         {
+            // Разделение строки на данные об автомобиле
             string[] data = lines[i].Split(';');
+            // Извлечение данных об автомобиле из строки
             string brand = data[0];
             string licensePlate = data[1];
             string ownerLastName = data[2];
             int yearPurchased = int.Parse(data[3]);
             double mileage = double.Parse(data[4]);
+            // Создание объекта Car и добавление в массив
             Car car = new Car(brand, licensePlate, ownerLastName, yearPurchased, mileage);
             cars[i] = car;
         }
 
+        // Возврат массива данных об автомобилях
         return cars;
     }
 
+    // Метод для фильтрации и сортировки автомобилей
     static Car[] FilterAndSortCars(Car[] cars, int specifiedYear)
     {
+        // Создание списка для отфильтрованных данных
         List<Car> filteredCars = new List<Car>();
 
+        // Цикл по всем автомобилям
         foreach (Car car in cars)
         {
+            // Проверка года покупки и добавление в список, если подходит
             if (car.YearPurchased < specifiedYear)
             {
                 filteredCars.Add(car);
             }
         }
 
-        filteredCars.Sort(); // Сортировка автомобилей по пробегу с помощью CompareTo
+        // Сортировка списка автомобилей по пробегу
+        filteredCars.Sort();
 
+        // Преобразование списка в массив и возврат его
         return filteredCars.ToArray();
     }
 
+    // Метод для записи данных об автомобилях в файл
     static void WriteCarsToFile(string filePath, Car[] cars)
     {
+        // Использование StreamWriter для записи в файл
         using (StreamWriter writer = new StreamWriter(filePath))
         {
+            // Цикл по всем автомобилям для записи в файл
             foreach (Car car in cars)
             {
+                // Запись данных об автомобиле в файл в формате "Марка;Номерной знак;Фамилия владельца;Год покупки;Пробег"
                 writer.WriteLine($"{car.Brand};{car.LicensePlate};{car.OwnerLastName};{car.YearPurchased};{car.Mileage}");
             }
         }
 
+        // Вывод сообщения об успешной записи данных в файл
         Console.WriteLine("Данные успешно записаны в файл.");
     }
 }
