@@ -4,11 +4,18 @@ using System.Linq;
 
 static class ProgramExtensions
 {
-    public static int[] FilterNumbers(this int[] numbers, int lowerBound, int upperBound)
+    public static void FilterNumbersAndPrint(this int[] numbers, int lowerBound, int upperBound)
     {
-        return numbers.Where(num => num < lowerBound || num > upperBound)
-                      .OrderByDescending(num => num)
-                      .ToArray();
+        var outsideRange = numbers.Where(num => num < lowerBound || num > upperBound)
+                                  .OrderByDescending(num => num)
+                                  .ToArray();
+
+
+        // Запись чисел из массива в файл в одну строку, разделенную пробелами
+        string outputFilePath = "output.txt";
+        File.WriteAllText(outputFilePath, string.Join(" ", outsideRange)); // Запись чисел в файл
+
+        Console.WriteLine("Данные записаны в файл 'output.txt'.");
     }
 }
 
@@ -23,17 +30,12 @@ class Program
 
         try
         {
-            int[] numbers = File.ReadAllLines(filePath) // Чтение всех строк из файла
+            int[] numbers = File.ReadAllText(filePath) // Чтение всего текста из файла
+                                .Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries) // Разделение текста на отдельные числа
                                 .Select(int.Parse) // Преобразование строк в числа типа int
                                 .ToArray(); // Преобразование последовательности в массив чисел
 
-            int[] outsideRange = numbers.FilterNumbers(a, b); // Использование метода расширения для фильтрации чисел
-
-            // Запись чисел из массива в файл в одну строку, разделенную пробелами
-            string outputFilePath = "output.txt";
-            File.WriteAllText(outputFilePath, string.Join(" ", outsideRange)); // Запись чисел в файл
-
-            Console.WriteLine("Данные записаны в файл 'output.txt'.");
+            numbers.FilterNumbersAndPrint(a, b); // Использование метода расширения для фильтрации чисел и вывода на консоль
         }
         catch (FileNotFoundException ex)
         {
