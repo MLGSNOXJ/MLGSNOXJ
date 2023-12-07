@@ -1,0 +1,98 @@
+using System;
+
+public class ArrayProcessor
+{
+    // Метод для проверки наличия числа в подмассиве
+    public bool IsNumberPresent(int[] sArr, int number)
+    {
+        // Цикл проверки элементов подмассива
+        for (int i = 0; i < sArr.Length; i++)
+        {
+            // Если число найдено в подмассиве, возвращается true
+            if (sArr[i] == number)
+            {
+                return true;
+            }
+        }
+        // Если число не найдено в подмассиве, возвращается false
+        return false;
+    }
+
+    // Метод для обработки массивов
+    public void ProcessArrays()
+    {
+        // Ввод пользователем требуемого числа и размера массива
+        Console.Write("Введите число: ");
+        int requiredNumber = Convert.ToInt32(Console.ReadLine());
+        Console.Write("Размер массива: ");
+        int arraySize = Convert.ToInt32(Console.ReadLine());
+
+        int rows = arraySize;
+        int columns = arraySize;
+
+        // Создание ступенчатого массива на основе введенного пользователем размера
+        int[][] Arr = new int[columns * 2][];
+        for (int i = 0; i < Arr.Length; i++)
+        {
+            Arr[i] = new int[rows];
+        }
+
+        // Заполнение массива элементами, введенными пользователем
+        Console.Write("Введите элементы массива: ");
+        for (int j = 0; j < rows; j++)
+        {
+            for (int i = 0; i < columns; i++)
+            {
+                Arr[i][j] = Convert.ToInt32(Console.ReadLine());
+            }
+        }
+
+        // Отображение массива до обработки
+        Console.WriteLine("Массив до обработки:");
+        for (int j = 0; j < columns; j++)
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                Console.Write("{0} ", Arr[i][j]);
+            }
+            Console.WriteLine();
+        }
+        Console.WriteLine();
+
+        // Обработка массива на основе наличия требуемого числа
+        for (int i = 0; i < columns; i++)
+        {
+            if (IsNumberPresent(Arr[i], requiredNumber))
+            {
+                // Сдвиг массива при нахождении числа в подмассиве
+                for (int index = columns; index > i; index--)
+                {
+                    Arr[index] = Arr[index - 1];
+                }
+                Arr[i] = new int[rows]; // Создание нового пустого массива
+                columns++; // Увеличение количества столбцов в массиве
+                i++; // Переход к следующему элементу после вставки нового пустого массива
+            }
+        }
+
+        // Отображение массива после обработки
+        Console.WriteLine("Массив после обработки:");
+        for (int j = 0; j < rows; j++)
+        {
+            for (int i = 0; i < columns; i++)
+            {
+                Console.Write("{0} ", Arr[i][j]);
+            }
+            Console.WriteLine();
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        ArrayProcessor processor = new ArrayProcessor();
+        processor.ProcessArrays();
+    }
+}
