@@ -1,0 +1,56 @@
+using System;
+using System.Diagnostics;
+
+class Program
+{
+    // Нерекурсивная реализация
+    static int NonRecursiveSumOfDigits(long number)
+    {
+        int sum = 0;
+        while (number != 0)
+        {
+            sum += (int)(number % 10);
+            number /= 10;
+        }
+        return sum;
+    }
+
+    // Рекурсивная реализация
+    static int RecursiveSumOfDigits(long number)
+    {
+        if (number == 0)
+            return 0;
+        return (int)(number % 10) + RecursiveSumOfDigits(number / 10);
+    }
+
+    static void Main()
+    {
+        // Пример вызова функций для измерения времени выполнения
+        long[] numbers = { 12345, 1234567890, 123456789012345 , 12345678901234567890 };
+
+        Console.WriteLine("Алгоритм\t\tЗначения А\t\tВремя выполнения (мс)");
+
+        Stopwatch stopwatch = new Stopwatch();
+
+        foreach (long number in numbers)
+        {
+            // Нерекурсивная реализация
+            stopwatch.Restart();
+            int nonRecursiveResult = NonRecursiveSumOfDigits(number);
+            stopwatch.Stop();
+            Console.WriteLine($"Нерекурсивный\t{number}\t\t\t{stopwatch.Elapsed.TotalMilliseconds}");
+
+            // Рекурсивная реализация
+            stopwatch.Restart();
+            int recursiveResult = RecursiveSumOfDigits(number);
+            stopwatch.Stop();
+            Console.WriteLine($"Рекурсивный\t{number}\t\t\t{stopwatch.Elapsed.TotalMilliseconds}");
+
+            // Можно также сравнить результаты, чтобы убедиться в правильности выполнения
+            // if (nonRecursiveResult != recursiveResult)
+            // {
+            //     Console.WriteLine($"Различие в результатах для числа {number}");
+            // }
+        }
+    }
+}
