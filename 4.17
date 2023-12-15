@@ -1,103 +1,6 @@
 using System;
 
-class Rectangle
-{
-    private int a, b;
-
-    public Rectangle(int sideA, int sideB) : this()
-    {
-        this.a = sideA;
-        this.b = sideB;
-    }
-
-    public Rectangle()
-    {
-    }
-
-    public int SideA
-    {
-        get { return a; }
-        set { a = value; }
-    }
-
-    public int SideB
-    {
-        get { return b; }
-        set { b = value; }
-    }
-
-    public void PrintSides()
-    {
-        Console.WriteLine($"Длина стороны a: {a}, Длина стороны b: {b}");
-    }
-
-    public int CalculatePerimeter()
-    {
-        return 2 * (a + b);
-    }
-
-    public int CalculateArea()
-    {
-        return a * b;
-    }
-
-    public int this[int index]
-    {
-        get
-        {
-            if (index == 0)
-                return a;
-            else if (index == 1)
-                return b;
-            else
-            {
-                Console.WriteLine("Ошибка: Недопустимый индекс!");
-                return -1;
-            }
-        }
-        set
-        {
-            if (index == 0)
-                a = value;
-            else if (index == 1)
-                b = value;
-            else
-                Console.WriteLine("Ошибка: Недопустимый индекс!");
-        }
-    }
-
-    public bool IsSquare => a == b;
-
-    // Перегрузка оператора инкремента (++rect)
-    public static Rectangle operator ++(Rectangle rect)
-    {
-        rect.a++;
-        rect.b++;
-        return rect;
-    }
-
-    // Перегрузка оператора декремента (--rect)
-    public static Rectangle operator --(Rectangle rect)
-    {
-        rect.a--;
-        rect.b--;
-        return rect;
-    }
-
-    // Перегрузка оператора умножения (*)
-    public static Rectangle operator *(Rectangle rect, int scalar)
-    {
-        rect.a *= scalar;
-        rect.b *= scalar;
-        return rect;
-    }
-
-    // Перегрузка констант true и false
-    public static implicit operator bool(Rectangle rect)
-    {
-        return rect.IsSquare;
-    }
-}
+namespace bimbimbambam{
 
 class Program
 {
@@ -125,7 +28,163 @@ class Program
         rect.PrintSides();
         
         Rectangle rectMultiplied = rect * 2;
-        Console.WriteLine("После умножения на 2:");
+        Console.WriteLine("После умножения на скаляр:");
         rectMultiplied.PrintSides();
     }
 }
+}
+
+
+
+
+
+using System;
+
+namespace bimbimbambam{
+
+class Rectangle
+{
+    //!!!Поля: 
+
+    private int a, b;
+    
+    
+    //!!!Конструктор, позволяющий создать экземпляр класса с заданными длинами сторон. 
+    
+    
+    
+// Объявляем конструктор класса Rectangle, который принимает два аргумента sideA и sideB
+        // Используем ключевое слово this() для вызова конструктора по умолчанию
+        // Присваиваем значения аргументов sideA и sideB переменным a и b соответственно
+    public Rectangle(int sideA, int sideB) : this()
+    {
+        this.a = sideA;
+        this.b = sideB;
+    }
+
+    public Rectangle()
+    {
+    }
+    
+    
+    //!!!Методы, позволяющие:
+
+
+
+ // Объявляем метод PrintSides, который выводит на консоль значения переменных a и b
+    public void PrintSides()
+    {
+        Console.WriteLine($"Длина стороны a: {a}, Длина стороны b: {b}");
+    }
+// Объявляем метод CalculatePerimeter, который возвращает периметр прямоугольника
+        // Периметр равен удвоенной сумме сторон a и b
+    public int CalculatePerimeter()
+    {
+        return 2 * (a + b);
+    }
+ // Объявляем метод CalculateArea, который возвращает площадь прямоугольника
+        // Площадь равна произведению сторон a и b
+    public int CalculateArea()
+    {
+        return a * b;
+    }
+    
+    
+    
+    //!!!Свойства:
+    
+    
+    
+ // Объявляем свойство SideA, которое возвращает значение переменной a и устанавливает ее значение
+    public int SideA
+    {
+        get { return a; }
+        set { a = value; }
+    }
+// Объявляем свойство SideB, которое возвращает значение переменной b и устанавливает ее значение
+    public int SideB
+    {
+        get { return b; }
+        set { b = value; }
+    }
+// Объявляем свойство IsSquare, которое возвращает true, если сторона a равна стороне b, и false в противном случае
+    public bool IsSquare => a == b;
+
+
+
+//!!!Индексатор, позволяющий по индексу 0 обращаться к полю a, по индексу 1 – к полю b,
+//!!!при других значениях индекса выдается сообщение об ошибке. 
+
+
+
+// Объявляем индексатор, который позволяет получать и устанавливать значения сторон a и b по индексу
+        // Если индекс равен 0, возвращаем значение переменной a
+        // Если индекс равен 1, возвращаем значение переменной b
+        // Если индекс не равен ни 0, ни 1, выводим сообщение об ошибке и возвращаем -1
+    public int this[int index]
+    {
+        get
+        {
+            if (index == 0)
+                return a;
+            else if (index == 1)
+                return b;
+            else
+            {
+                Console.WriteLine("Ошибка: Недопустимый индекс!");
+                return -1;
+            }
+        }
+        set
+        {
+            if (index == 0)
+                a = value;
+            else if (index == 1)
+                b = value;
+            else
+                Console.WriteLine("Ошибка: Недопустимый индекс!");
+        }
+    }
+
+
+//!!!Перегрузку: 
+
+    // Перегружаем оператор инкремента (++rect)
+        // Увеличиваем значения сторон a и b на 1
+        // Возвращаем измененный объект rect
+    public static Rectangle operator ++(Rectangle rect)
+    {
+        rect.a++;
+        rect.b++;
+        return rect;
+    }
+
+    // Перегружаем оператор декремента (--rect)
+        // Уменьшаем значения сторон a и b на 1
+        // Возвращаем измененный объект rect
+    public static Rectangle operator --(Rectangle rect)
+    {
+        rect.a--;
+        rect.b--;
+        return rect;
+    }
+
+    // Перегружаем оператор умножения (*)
+        // Умножаем значения сторон a и b на скаляр
+        // Возвращаем измененный объект rect
+    public static Rectangle operator *(Rectangle rect, int scalar)
+    {
+        rect.a *= scalar;
+        rect.b *= scalar;
+        return rect;
+    }
+
+    // Перегружаем константы true и false
+        // Преобразуем объект rect в логическое значение, возвращая true, если сторона a равна стороне b, и false в противном случае
+    public static implicit operator bool(Rectangle rect)
+    {
+        return rect.IsSquare;
+    }
+}
+}
+
