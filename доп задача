@@ -1,10 +1,11 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 
 class Program
 {
     // Нерекурсивная реализация
-    static int NonRecursiveSumOfDigits(long number)
+    static int NonRecursiveSumOfDigits(ulong number)
     {
         int sum = 0;
         while (number != 0)
@@ -16,7 +17,7 @@ class Program
     }
 
     // Рекурсивная реализация
-    static int RecursiveSumOfDigits(long number)
+    static int RecursiveSumOfDigits(ulong number)
     {
         if (number == 0)
             return 0;
@@ -25,32 +26,47 @@ class Program
 
     static void Main()
     {
-        // Пример вызова функций для измерения времени выполнения
-        long[] numbers = { 12345, 1234567890, 123456789012345 , 12345678901234567890 };
+        string inputPath = "input.txt"; // Путь к файлу с входными данными
+        string outputPath = "output.txt"; // Путь к файлу для вывода результата
 
-        Console.WriteLine("Алгоритм\t\tЗначения А\t\tВремя выполнения (мс)");
+        // Чтение входных данных из файла
+        string line = File.ReadAllText(inputPath);
+        string[] numbersStr = line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-        Stopwatch stopwatch = new Stopwatch();
-
-        foreach (long number in numbers)
+        using (StreamWriter outputFile = new StreamWriter(outputPath))
         {
-            // Нерекурсивная реализация
-            stopwatch.Restart();
-            int nonRecursiveResult = NonRecursiveSumOfDigits(number);
-            stopwatch.Stop();
-            Console.WriteLine($"Нерекурсивный\t{number}\t\t\t{stopwatch.Elapsed.TotalMilliseconds}");
+            outputFile.WriteLine("Алгоритм\t\tЗначения А\t\tВремя выполнения (мс)");
 
-            // Рекурсивная реализация
-            stopwatch.Restart();
-            int recursiveResult = RecursiveSumOfDigits(number);
-            stopwatch.Stop();
-            Console.WriteLine($"Рекурсивный\t{number}\t\t\t{stopwatch.Elapsed.TotalMilliseconds}");
+            Stopwatch stopwatch = new Stopwatch();
 
-            // Можно также сравнить результаты, чтобы убедиться в правильности выполнения
-            // if (nonRecursiveResult != recursiveResult)
-            // {
-            //     Console.WriteLine($"Различие в результатах для числа {number}");
-            // }
+            foreach (string numberStr in numbersStr)
+            {
+                if (ulong.TryParse(numberStr, out ulong number))
+                {
+                    // Нерекурсивная реализация
+                    stopwatch.Start();
+                    int nonRecursiveResult = NonRecursiveSumOfDigits(number);
+                    stopwatch.Stop();
+                    outputFile.WriteLine($"Нерекурсивный\t{number}\t\t\t{stopwatch.Elapsed.TotalMilliseconds}");
+
+                    // Рекурсивная реализация
+                    stopwatch.Start();
+                    int recursiveResult = RecursiveSumOfDigits(number);
+                    stopwatch.Stop();
+                    outputFile.WriteLine($"Рекурсивный\t{number}\t\t\t{stopwatch.Elapsed.TotalMilliseconds}");
+
+                    // Можно также сравнить результаты, чтобы убедиться в правильности выполнения
+                    if (nonRecursiveResult != recursiveResult)
+                    {
+                        outputFile.WriteLine($"Различие в результатах для числа {number}");
+                    }
+                }
+                else
+                {
+                    outputFile.WriteLine($"Ошибка в чтении числа: {numberStr}");
+                }
+            }
         }
     }
 }
+12345 1234567890 123456789012345 12345678901234567890
