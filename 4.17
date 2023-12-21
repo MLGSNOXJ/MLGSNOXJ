@@ -58,16 +58,12 @@ class Rectangle
 // Объявляем конструктор класса Rectangle, который принимает два аргумента sideA и sideB
         // Используем ключевое слово this() для вызова конструктора по умолчанию
         // Присваиваем значения аргументов sideA и sideB переменным a и b соответственно
-    public Rectangle(int sideA, int sideB) : this()
+    public Rectangle(int sideA, int sideB)
     {
         this.a = sideA;
         this.b = sideB;
     }
 
-    public Rectangle()
-    {
-    }
-    
     
     //!!!Методы, позволяющие:
 
@@ -156,9 +152,10 @@ class Rectangle
         // Возвращаем измененный объект rect
     public static Rectangle operator ++(Rectangle rect)
     {
-        rect.a++;
-        rect.b++;
-        return rect;
+        Rectangle temp = new Rectangle(rect.a,rect.b);
+        temp.a = rect.a + 1;
+        temp.b = rect.b + 1;
+        return temp;
     }
 
     // Перегружаем оператор декремента (--rect)
@@ -166,9 +163,10 @@ class Rectangle
         // Возвращаем измененный объект rect
     public static Rectangle operator --(Rectangle rect)
     {
-        rect.a--;
-        rect.b--;
-        return rect;
+        Rectangle temp = new Rectangle(rect.a,rect.b);
+        temp.a = rect.a - 1;
+        temp.b = rect.b - 1;
+        return temp;
     }
 
     // Перегружаем оператор умножения (*)
@@ -176,9 +174,10 @@ class Rectangle
         // Возвращаем измененный объект rect
     public static Rectangle operator *(Rectangle rect, int scalar)
     {
-        rect.a *= scalar;
-        rect.b *= scalar;
-        return rect;
+        Rectangle temp = new Rectangle(rect.a,rect.b);
+        temp.a *= scalar;
+        temp.b *= scalar;
+        return temp;
     }
 
     // Перегружаем константы true и false
@@ -189,4 +188,3 @@ class Rectangle
     }
 }
 }
-
