@@ -22,11 +22,13 @@ class Program
         ++rect;
         Console.WriteLine("После инкремента:");
         rect.PrintSides();
-
+        rect.SideA = 6;
+        rect.SideB = 4;
         --rect; // Перегрузка оператора декремента
         Console.WriteLine("После декремента:");
         rect.PrintSides();
-        
+        rect.SideA = 6;
+        rect.SideB = 4;
         Rectangle rectMultiplied = rect * 2;
         Console.WriteLine("После умножения на скаляр:");
         rectMultiplied.PrintSides();
