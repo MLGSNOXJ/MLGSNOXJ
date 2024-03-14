@@ -1,9 +1,58 @@
 using System;
 using System.IO;
 
-namespace Example
+   namespace Prog{
+    // Основной класс программы
+    class Program
+    {
+        static void Main()
+        {
+            BinarySearchTree tree = new BinarySearchTree(); // Создание экземпляра бинарного дерева
+
+            // Чтение входных данных из файла
+            using (StreamReader fileIn = new StreamReader("input.txt"))
+            {
+                string line = fileIn.ReadToEnd(); // Чтение всего содержимого файла
+                string[] data = line.Split(' '); // Разделение строки на массив чисел по пробелу
+                foreach (string item in data)
+                {
+                    tree.Add(int.Parse(item)); // Добавление каждого числа в дерево
+                }
+            }
+
+            // Ввод значения узла, для которого требуется найти количество потомков
+            int targetValue = int.Parse(Console.ReadLine());
+
+            // Поиск узла с заданным значением в дереве
+            Node targetNode = tree.FindNode(targetValue);
+
+            // Подсчет количества потомков у найденного узла
+            // Подсчет количества потомков у найденного узла
+            int descendantsCount;
+            if (targetNode != null)
+            {
+                descendantsCount = targetNode.CountDescendants();
+            }
+            else
+            {
+                descendantsCount = 0;
+            }
+
+            // Вывод результата
+            Console.WriteLine($"Количество потомков у узла со значением {targetValue}: {descendantsCount - 1}");
+        }
+    }
+}
+
+
+
+
+
+using System;
+
+namespace Prog
 {
-    // Класс, представляющий узел дерева
+ // Класс, представляющий узел дерева
     class Node
     {
         public int Data; // Значение узла
@@ -16,21 +65,23 @@ namespace Example
             Left = Right = null;
         }
 
-        // Статический метод для подсчета количества узлов, значение которых попадает в интервал (a, b)
-        public static int CountNodesInRange(Node root, int a, int b)
+        // Метод для подсчета количества потомков у текущего узла
+        // Метод для подсчета количества потомков у текущего узла
+        public int CountDescendants()
         {
-            if (root == null)
+            return CountDescendantsRecursive(this);
+        }
+        
+        // Рекурсивный метод для подсчета количества потомков у указанного узла
+        private int CountDescendantsRecursive(Node node)
+        {
+            if (node == null)
                 return 0;
-
-            int count = 0;
-            if (root.Data > a && root.Data < b)
-                count++;
-
-            // Рекурсивный вызов для левого и правого поддеревьев
-            count += CountNodesInRange(root.Left, a, b);
-            count += CountNodesInRange(root.Right, a, b);
-
-            return count;
+        
+            int leftCount = CountDescendantsRecursive(node.Left);
+            int rightCount = CountDescendantsRecursive(node.Right);
+        
+            return leftCount + rightCount + 1; // Подсчитываем текущий узел и его потомков
         }
     }
 
@@ -69,40 +120,23 @@ namespace Example
             return root;
         }
 
-        // Метод для подсчета количества узлов, значения которых попадает в интервал (a, b)
-        public int CountNodesInRange(int a, int b)
+        // Метод для поиска узла по значению
+        public Node FindNode(int value)
         {
-            return Node.CountNodesInRange(Root, a, b); // Вызов статического метода из класса Node
+            return FindNodeRecursive(Root, value);
         }
-    }
 
-    // Основной класс программы
-    class Program
-    {
-        static void Main()
+        // Рекурсивный метод для поиска узла по значению
+        private Node FindNodeRecursive(Node root, int value)
         {
-            BinarySearchTree tree = new BinarySearchTree(); // Создание экземпляра бинарного дерева
+            if (root == null || root.Data == value)
+                return root;
 
-            // Чтение входных данных из файла
-            using (StreamReader fileIn = new StreamReader("input.txt"))
-            {
-                string line = fileIn.ReadToEnd(); // Чтение всего содержимого файла
-                string[] data = line.Split(' '); // Разделение строки на массив чисел по пробелу
-                foreach (string item in data)
-                {
-                    tree.Add(int.Parse(item)); // Добавление каждого числа в дерево
-                }
-            }
-
-            // Ввод интервала (a, b) с клавиатуры
-            int a = int.Parse(Console.ReadLine());
-            int b = int.Parse(Console.ReadLine());
-
-            // Подсчет количества узлов, значения которых попадает в интервал (a, b)
-            int count = tree.CountNodesInRange(a, b);
-
-            // Вывод результата
-            Console.WriteLine($"Количество узлов, значение которых попадает в интервал ({a}, {b}): {count}");
+            if (value < root.Data)
+                return FindNodeRecursive(root.Left, value);
+            else
+                return FindNodeRecursive(root.Right, value);
         }
-    }
+    }   
 }
+
